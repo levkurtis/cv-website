@@ -19,7 +19,7 @@ const experiences: Job[] = [
       {
         title: 'Data Migration Stream Lead',
         period: '06/2026 – Current',
-        description: 'Team Lead on a large-scale public sector data initiative, leading a team of 3 consultants and responsible for delivery, onboarding, and professional development.',
+        description: 'Nordic energy company ERP migration.',
         achievements: [
           'Lead Dynamics 365 data migration workstream as liaison between client and oﬀshore ETL team.',
           'Resolved 30+ migration impediments end-to-end across master data domains.',
@@ -31,7 +31,7 @@ const experiences: Job[] = [
       {
         title: 'Team Lead',
         period: '01/2025 – 05/2026',
-        description: 'Team Lead on a large-scale public sector data initiative, leading a team of 3 consultants and responsible for delivery, onboarding, and professional development.',
+        description: 'Large-scale public sector data initiative, leading a team of 3 consultants.',
         achievements: [
           'Lead team of 3 consultants, responsible for delivery, onboarding, and professional development.',
           'Own delivery of dashboards, data analyses, and data quality eﬀorts, aligning legal, technical, and business stakeholders.',
@@ -47,7 +47,7 @@ const experiences: Job[] = [
       {
         title: 'Data & AI Consultant',
         period: '09/2023 – 12/2024',
-        description: 'Consultant on a large-scale public sector data initiative.',
+        description: 'Large-scale public sector data initiative.',
         achievements: [
           'Led data analysis eﬀorts on a cross-agency initiative to resolve complex data quality issues previously deemed unresolvable. Eﬀorts unlocked 350M+ DKK in frozen cases.',
           'Managed analytical engagements end-to-end, from data collection to presenting findings and recommendations to stakeholders.',

@@ -24,7 +24,7 @@ const experiences: Job[] = [
           'Lead Dynamics 365 data migration workstream as liaison between client and oﬀshore ETL team.',
           'Resolved 30+ migration impediments end-to-end across master data domains.',
           'Co-designed a data quality gate framework for migration readiness validation.',
-          'Analysed and scoped 15 migration decisions into into eﬀort-estimated implementation tasks ahead of mock run.',
+          'Analysed and scoped 15 migration decisions into eﬀort-estimated implementation tasks ahead of mock run.',
           'Completed one full migration mock run and leading migration readiness preparations for second mock run.',
         ],
       },

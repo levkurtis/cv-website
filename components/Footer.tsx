@@ -4,7 +4,7 @@ const links = [
   { label: 'LinkedIn', detail: 'in/leventkurtis', href: 'https://linkedin.com/in/leventkurtis', external: true },
   { label: 'Email', detail: 'levkurtis@gmail.com', href: 'mailto:levkurtis@gmail.com' },
   { label: 'GitHub', detail: 'levkurtis', href: 'https://github.com/levkurtis', external: true },
-  { label: 'CV', detail: 'PDF', href: '/levent_kurtis_cv.pdf', download: true },
+  { label: 'CV', detail: 'Download PDF', href: '/levent_kurtis_cv.pdf', download: true },
 ]
 
 export default function Footer() {
@@ -53,7 +53,7 @@ export default function Footer() {
 
           <div className="flex justify-between gap-8 font-mono text-xs uppercase tracking-[0.14em] text-muted lg:col-span-3 lg:flex-col lg:items-end lg:justify-start lg:text-right">
             <p>
-              Copenhagen
+              Local time, Copenhagen
               <LocalTime className="mt-1 block text-2xl tracking-normal text-foreground" />
             </p>
             <p>© {currentYear} Levent Kurtis</p>

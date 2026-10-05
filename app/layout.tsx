@@ -30,14 +30,15 @@ const mono = JetBrains_Mono({
   variable: '--font-jetbrains',
 })
 
-// Runs before first paint. Plays the intro once per tab session, never for
-// reduced motion. Without JS the attribute is never set, so the overlay
+// Runs before first paint. Plays the intro once per tab session, on desktop
+// only (phone visitors, often in a fresh LinkedIn webview, go straight to the
+// content) and never for reduced motion. Without JS the attribute is never set, so the overlay
 // stays display:none.
-const INTRO_SCRIPT = `try{if(!sessionStorage.getItem('lk-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.setAttribute('data-intro','play');sessionStorage.setItem('lk-intro','1')}}catch(e){}`
+const INTRO_SCRIPT = `try{if(!sessionStorage.getItem('lk-intro')&&matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)').matches){document.documentElement.setAttribute('data-intro','play');sessionStorage.setItem('lk-intro','1')}}catch(e){}`
 
 const TITLE = 'Levent Kurtis | Data & AI Leader'
 const DESCRIPTION =
-  'Data & AI consultant and team lead at Accenture in Copenhagen. Data migration, data quality and analytics delivery. Full CV, experience and certifications.'
+  'Data & AI lead at Accenture in Copenhagen. Data migration, data quality and analytics delivery. Full CV, experience and certifications.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -100,7 +101,7 @@ export default function RootLayout({
           type="image/avif"
           href="/photo-hero-720.avif"
           imageSrcSet="/photo-hero-720.avif 720w, /photo-hero-1080.avif 1080w"
-          imageSizes="(min-width: 1024px) min(40vw, 640px), 72vw"
+          imageSizes="(min-width: 1024px) min(46vw, 640px), (min-width: 640px) 50vw, 60vw"
           fetchPriority="high"
         />
       </head>

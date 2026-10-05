@@ -3,8 +3,8 @@
  * unless the inline head script in layout.tsx set html[data-intro="play"],
  * so crawlers, no-JS visitors and reduced-motion users never see it.
  *
- * Everything is CSS (see "Intro overlay" in globals.css), including the
- * 000 to 100 counter, so it plays before hydration and can't get stuck.
+ * Everything is CSS (see "Intro overlay" in globals.css), so it plays before
+ * hydration and can't get stuck.
  */
 export default function Intro() {
   return (
@@ -19,12 +19,7 @@ export default function Intro() {
         Kurtis
       </p>
 
-      <div>
-        <div className="flex justify-end font-mono">
-          <span className="intro-count text-sm tabular-nums" />
-        </div>
-        <div className="intro-bar mt-3 h-px bg-accent" />
-      </div>
+      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Data &amp; AI Lead</p>
     </div>
   )
 }

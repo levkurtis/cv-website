@@ -43,7 +43,7 @@ const person = {
   image: `${SITE_URL}/photo-1000.jpg`,
   jobTitle: 'Senior Business Architecture Analyst',
   description:
-    'Data & AI consultant and team lead at Accenture in Copenhagen, working on large-scale public sector data transformation.',
+    'Data & AI lead at Accenture in Copenhagen. Currently Data Migration Stream Lead on an energy sector ERP migration; previously team lead on a large-scale public sector data programme.',
   worksFor: { '@type': 'Organization', name: 'Accenture', url: 'https://www.accenture.com' },
   alumniOf: {
     '@type': 'CollegeOrUniversity',

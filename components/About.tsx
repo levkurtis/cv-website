@@ -8,7 +8,7 @@ export default function About() {
 
         <div className="lg:col-span-8">
           <p className="max-w-3xl text-xl leading-relaxed text-foreground/90 sm:text-2xl sm:leading-relaxed">
-            As a Consultant at Accenture, I advise clients on data-driven transformation and implement the solutions that follow. I
+            As a Data &amp; AI Lead at Accenture, I advise clients on data-driven transformation and implement the solutions that follow. I
             translate complex data challenges into action, from data migration and quality frameworks to analytics, automation and ML/
             AI adoption. With hands-on technical expertise and a digital business background, I bridge the gap between technical
             teams and executive stakeholders. Driven by curiosity, I explore GenAI tools like LM Studio and Ollama outside of work.

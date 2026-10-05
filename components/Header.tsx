@@ -73,7 +73,7 @@ export default function Header() {
           <a
             key={item.href}
             href={item.href}
-            className="rounded-full px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground"
+            className="whitespace-nowrap rounded-full px-2.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted lg:px-3.5 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground"
           >
             {item.label}
           </a>
@@ -81,7 +81,7 @@ export default function Header() {
         <a
           href="/levent_kurtis_cv.pdf"
           download
-          className="ml-1 rounded-full bg-foreground px-4 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-colors duration-200 hover:bg-accent-text"
+          className="ml-1 whitespace-nowrap rounded-full bg-foreground px-4 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-colors duration-200 hover:bg-accent-text"
         >
           Download CV
         </a>

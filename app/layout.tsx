@@ -100,7 +100,7 @@ export default function RootLayout({
           as="image"
           type="image/avif"
           href="/photo-hero-720.avif"
-          imageSrcSet="/photo-hero-720.avif 720w, /photo-hero-1080.avif 1080w"
+          imageSrcSet="/photo-hero-720.avif 720w, /photo-hero-1080-v2.avif 1080w"
           imageSizes="(min-width: 1024px) min(46vw, 640px), (min-width: 640px) 50vw, 60vw"
           fetchPriority="high"
         />

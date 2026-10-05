@@ -56,7 +56,7 @@ export default function Hero() {
             <picture>
               <source
                 type="image/avif"
-                srcSet="/photo-hero-720.avif 720w, /photo-hero-1080.avif 1080w"
+                srcSet="/photo-hero-720.avif 720w, /photo-hero-1080-v2.avif 1080w"
                 sizes={PHOTO_SIZES}
               />
               <img

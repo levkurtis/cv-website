@@ -18,7 +18,7 @@ export default function Education() {
   return (
     <section id="education" className="px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
       <div className="mx-auto grid max-w-[1440px] gap-10 border-t border-border pt-8 lg:grid-cols-12 lg:gap-8">
-        <SectionHeading index="05" label="Education" title="Education" />
+        <SectionHeading title="Education" />
 
         <div className="lg:col-span-8">
           <div className="flex flex-col gap-4 border-b border-border pb-8 md:flex-row md:items-end md:justify-between">

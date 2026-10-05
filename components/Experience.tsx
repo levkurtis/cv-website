@@ -150,7 +150,7 @@ export default function Experience() {
   return (
     <section id="experience" className="px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
       <div className="mx-auto grid max-w-[1440px] gap-10 border-t border-border pt-8 lg:grid-cols-12 lg:gap-8">
-        <SectionHeading index="02" label="Experience" title="Work Experience" />
+        <SectionHeading title="Work Experience" />
 
         <div className="border-t border-border lg:col-span-8 lg:border-t-0">
           {experiences.map((job) => (

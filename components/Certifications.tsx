@@ -53,7 +53,7 @@ export default function Certifications() {
   return (
     <section id="certifications" className="px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
       <div className="mx-auto grid max-w-[1440px] gap-10 border-t border-border pt-8 lg:grid-cols-12 lg:gap-8">
-        <SectionHeading index="04" label="Certifications" title="Certifications" />
+        <SectionHeading title="Certifications" />
 
         <div className="space-y-12 lg:col-span-8">
           {certificationCategories.map((category) => (

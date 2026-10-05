@@ -4,7 +4,7 @@ export default function About() {
   return (
     <section id="about" className="px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
       <div className="mx-auto grid max-w-[1440px] gap-10 border-t border-border pt-8 lg:grid-cols-12 lg:gap-8">
-        <SectionHeading index="01" label="About" title="About Me" />
+        <SectionHeading title="About Me" />
 
         <div className="lg:col-span-8">
           <p className="max-w-3xl text-xl leading-relaxed text-foreground/90 sm:text-2xl sm:leading-relaxed">

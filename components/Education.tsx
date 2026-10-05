@@ -1,3 +1,4 @@
+import Marker from './Marker'
 import SectionHeading from './SectionHeading'
 
 // Label on the left, content on the right, hairline between rows.
@@ -8,10 +9,6 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
       <div>{children}</div>
     </div>
   )
-}
-
-function Marker() {
-  return <span className="mt-[12px] mr-3 h-px w-3 shrink-0 bg-accent" aria-hidden="true" />
 }
 
 export default function Education() {

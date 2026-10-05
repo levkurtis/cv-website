@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { Archivo, Inter, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
-import Intro from '@/components/Intro'
 import ScrollBackground from '@/components/ScrollBackground'
 import StructuredData, { SITE_URL } from '@/components/StructuredData'
 
@@ -29,12 +28,6 @@ const mono = JetBrains_Mono({
   preload: false,
   variable: '--font-jetbrains',
 })
-
-// Runs before first paint. Plays the intro once per tab session, on desktop
-// only (phone visitors, often in a fresh LinkedIn webview, go straight to the
-// content) and never for reduced motion. Without JS the attribute is never set, so the overlay
-// stays display:none.
-const INTRO_SCRIPT = `try{if(!sessionStorage.getItem('lk-intro')&&matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)').matches){document.documentElement.setAttribute('data-intro','play');sessionStorage.setItem('lk-intro','1')}}catch(e){}`
 
 const TITLE = 'Levent Kurtis | Data & AI Leader'
 const DESCRIPTION =
@@ -89,10 +82,8 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${archivo.variable} ${mono.variable}`}
-      suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: INTRO_SCRIPT }} />
         {/* Preload the LCP image. type="image/avif" makes non-supporting browsers skip it.
             imageSizes must match the sizes attribute in Hero.tsx. */}
         <link
@@ -106,7 +97,6 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <Intro />
         <ScrollBackground />
         {children}
         <Analytics />

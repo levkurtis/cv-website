@@ -108,47 +108,12 @@ summary::-webkit-details-marker {
 }
 
 /* ------------------------------------------------------------------ */
-/* Intro overlay                                                       */
-/* ------------------------------------------------------------------ */
-
-/* Only exists when the head script set data-intro="play". The exit is pure
-   CSS with a hard end at ~1.3s, so nothing can leave it stuck on screen. */
-.intro {
-  display: none;
-}
-
-html[data-intro='play'] .intro {
-  display: flex;
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: var(--color-ink-deep);
-  animation: intro-exit 0.6s cubic-bezier(0.76, 0, 0.24, 1) 0.7s forwards;
-}
-
-@keyframes intro-exit {
-  to {
-    transform: translateY(-100%);
-    visibility: hidden;
-  }
-}
-
-.intro-name {
-  animation: fade-up 0.6s cubic-bezier(0.2, 0.7, 0.1, 1) 0.1s both;
-}
-
-/* ------------------------------------------------------------------ */
 /* Hero reveal                                                         */
 /* ------------------------------------------------------------------ */
 
-/* Every hero delay is offset by --reveal-start, which jumps when the intro
-   plays so the hero animates as the overlay lifts. */
+/* Every hero delay is offset by --reveal-start. */
 :root {
   --reveal-start: 0.1s;
-}
-
-html[data-intro='play'] {
-  --reveal-start: 0.85s;
 }
 
 .reveal-line {
@@ -234,18 +199,13 @@ html[data-intro='play'] {
 }
 
 /* ------------------------------------------------------------------ */
-/* Reduced motion: no intro (the head script skips it), no line        */
-/* animation, no reveals. Base styles are the final state, so removing */
-/* the animations leaves everything visible.                           */
+/* Reduced motion: no line animation, no reveals. Base styles are the */
+/* final state, so removing the animations leaves everything visible. */
 /* ------------------------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-
-  html[data-intro='play'] .intro {
-    display: none;
   }
 
   /* A frozen dash would just sit at the start of its line. */

@@ -1,3 +1,4 @@
+import Marker from './Marker'
 import SectionHeading from './SectionHeading'
 
 interface Role {
@@ -122,11 +123,6 @@ function Toggle({ open }: { open: string }) {
       <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-current" />
     </span>
   )
-}
-
-// A short rule as the list marker.
-function Marker() {
-  return <span className="mt-[12px] mr-3 h-px w-3 shrink-0 bg-accent" aria-hidden="true" />
 }
 
 // Achievements are ordered strongest first; past this many the rest wait

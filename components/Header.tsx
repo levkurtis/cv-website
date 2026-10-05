@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 
 const navItems = [
   { label: 'About', href: '#about' },
@@ -10,18 +10,87 @@ const navItems = [
   { label: 'Education', href: '#education' },
 ]
 
+// A section is active once its top passes this line (fraction of viewport
+// height), so the highlight moves when a section is properly in view.
+const FOCUS_LINE = 0.4
+
+// The section under the focus line, or null in the hero and the footer.
+function sectionInFocus(): string | null {
+  const line = window.innerHeight * FOCUS_LINE
+  let current: { href: string; bottom: number } | null = null
+  for (const item of navItems) {
+    const el = document.getElementById(item.href.slice(1))
+    if (!el) continue
+    const rect = el.getBoundingClientRect()
+    if (rect.top <= line) current = { href: item.href, bottom: rect.bottom }
+  }
+  return current && current.bottom > line ? current.href : null
+}
+
+interface Pill {
+  left: number
+  right: number
+  visible: boolean
+  // Which way it last travelled; picks the leading edge for the stretch.
+  dir: 'left' | 'right' | 'none'
+}
+
+// Liquid stretch: the edge facing the destination leaves first and fast, the
+// trailing edge follows slower, so the pill stretches across the gap and
+// settles. Appearing from hidden skips the travel and only fades/scales in.
+const LEAD = '380ms cubic-bezier(0.16, 1, 0.3, 1)'
+const TRAIL = '560ms cubic-bezier(0.65, 0, 0.35, 1) 40ms'
+const FADE = 'opacity 250ms ease-out, transform 300ms cubic-bezier(0.16, 1, 0.3, 1)'
+const PILL_TRANSITION = {
+  right: `right ${LEAD}, left ${TRAIL}, ${FADE}`,
+  left: `left ${LEAD}, right ${TRAIL}, ${FADE}`,
+  none: FADE,
+}
+
+// Hover: each letter thickens from 400 to 700, rippling out from the centre
+// of the word (see .weight-letter in globals.css). The mono face keeps every
+// letter the same width, so nothing shifts as the weight changes.
+const RIPPLE_STEP_MS = 30
+
+function WeightLetters({ text }: { text: string }) {
+  const centre = (text.length - 1) / 2
+  return (
+    <>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">
+        {text.split('').map((letter, i) => (
+          <span
+            key={i}
+            className="weight-letter"
+            style={{ '--ripple': `${Math.round(Math.abs(i - centre)) * RIPPLE_STEP_MS}ms` } as React.CSSProperties}
+          >
+            {letter}
+          </span>
+        ))}
+      </span>
+    </>
+  )
+}
+
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [active, setActive] = useState<string | null>(null)
+  const [pill, setPill] = useState<Pill | null>(null)
+  const navRef = useRef<HTMLElement>(null)
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
+  // While a nav click is smooth-scrolling, the highlight holds on the
+  // destination instead of chasing every section it passes.
+  const lockRef = useRef(false)
 
   useEffect(() => {
     let ticking = false
 
-    // Passive + rAF-throttled. setIsScrolled with an unchanged value is a no-op
-    // in React, so this only re-renders on the two transitions rather than on
-    // every scroll event.
+    // Passive + rAF-throttled. Setting unchanged state is a no-op in React,
+    // so this only re-renders when isScrolled or the active section changes.
     const update = () => {
       setIsScrolled(window.scrollY > 50)
+      if (!lockRef.current) setActive(sectionInFocus())
       ticking = false
     }
 
@@ -33,10 +102,58 @@ export default function Header() {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll, { passive: true })
     update()
 
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
   }, [])
+
+  const goTo = useCallback((href: string) => {
+    setActive(href)
+    lockRef.current = true
+    let done = false
+    const release = () => {
+      if (done) return
+      done = true
+      lockRef.current = false
+      window.removeEventListener('scrollend', release)
+      setActive(sectionInFocus())
+    }
+    window.addEventListener('scrollend', release)
+    // Fallback for browsers without scrollend, or a click that doesn't scroll.
+    window.setTimeout(release, 1200)
+  }, [])
+
+  // Measure the active link and move the pill to it.
+  const placePill = useCallback(() => {
+    const nav = navRef.current
+    const link = active ? linkRefs.current[active] : null
+    if (!nav || !link || !nav.offsetParent) {
+      setPill((p) => (p && p.visible ? { ...p, visible: false } : p))
+      return
+    }
+    const left = link.offsetLeft
+    const right = nav.clientWidth - left - link.offsetWidth
+    setPill((p) => {
+      if (p && p.visible && p.left === left && p.right === right) return p
+      const dir = !p || !p.visible ? 'none' : left > p.left ? 'right' : left < p.left ? 'left' : p.dir
+      return { left, right, visible: true, dir }
+    })
+  }, [active])
+
+  useLayoutEffect(placePill, [placePill])
+
+  // Re-measure when the nav changes size (fonts loading, breakpoint changes).
+  useEffect(() => {
+    const nav = navRef.current
+    if (!nav) return
+    const observer = new ResizeObserver(() => placePill())
+    observer.observe(nav)
+    return () => observer.disconnect()
+  }, [placePill])
 
   useEffect(() => {
     if (!isMobileMenuOpen) return
@@ -46,6 +163,8 @@ export default function Header() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [isMobileMenuOpen])
+
+  const activeLabel = navItems.find((item) => item.href === active)?.label
 
   // The pill gets denser once the page has scrolled under it.
   const surface = isScrolled
@@ -63,25 +182,47 @@ export default function Header() {
 
       {/* Desktop: one floating pill */}
       <nav
+        ref={navRef}
         aria-label="Main"
-        className={`hidden md:flex items-center gap-1 rounded-[18px] border p-1.5 backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-300 ${surface}`}
+        className={`relative hidden md:flex items-center gap-1 rounded-[18px] border p-1.5 backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-300 ${surface}`}
       >
-        <a href="#" className="font-display px-4 text-lg leading-none tracking-wide">
+        {/* Active-section pill, behind the links */}
+        {pill && (
+          <span
+            className="pointer-events-none absolute inset-y-1.5 rounded-[18px] bg-foreground/[0.09]"
+            style={{
+              left: pill.left,
+              right: pill.right,
+              opacity: pill.visible ? 1 : 0,
+              transform: pill.visible ? 'scale(1)' : 'scale(0.9)',
+              transition: PILL_TRANSITION[pill.dir],
+            }}
+            aria-hidden="true"
+          />
+        )}
+        <a href="#" className="relative font-display px-4 text-lg leading-none tracking-wide">
           LK<span className="sr-only"> Levent Kurtis, back to top</span>
         </a>
         {navItems.map((item) => (
           <a
             key={item.href}
+            ref={(el) => {
+              linkRefs.current[item.href] = el
+            }}
             href={item.href}
-            className="whitespace-nowrap rounded-[18px] px-2.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted lg:px-3.5 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground"
+            onClick={() => goTo(item.href)}
+            aria-current={active === item.href ? 'location' : undefined}
+            className={`weight-hover relative whitespace-nowrap rounded-[18px] px-2.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] lg:px-3.5 transition-colors duration-300 hover:text-foreground ${
+              active === item.href ? 'text-foreground' : 'text-muted hover:bg-foreground/5'
+            }`}
           >
-            {item.label}
+            <WeightLetters text={item.label} />
           </a>
         ))}
         <a
           href="/levent_kurtis_cv.pdf"
           download
-          className="ml-1 whitespace-nowrap rounded-[18px] bg-foreground px-4 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-colors duration-200 hover:bg-accent-text"
+          className="relative ml-1 whitespace-nowrap rounded-[18px] bg-foreground px-4 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-colors duration-200 hover:bg-accent-text"
         >
           Download CV
         </a>
@@ -93,17 +234,32 @@ export default function Header() {
         className={`md:hidden overflow-hidden border backdrop-blur-md transition-[width,background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] ${
           isMobileMenuOpen
             ? 'w-full rounded-[18px] bg-ink-deep/95 border-foreground/12'
-            : `w-64 rounded-[18px] ${surface}`
+            : `w-72 max-w-full rounded-[18px] ${surface}`
         }`}
       >
         <div className="flex h-14 items-center gap-1 pl-2 pr-1.5">
           <a href="#" className="font-display flex h-11 min-w-11 items-center justify-center px-3 text-lg leading-none tracking-wide">
             LK<span className="sr-only"> Levent Kurtis, back to top</span>
           </a>
+          {/* Current section, swapped in as it changes. Visual only: the
+              open menu marks it with aria-current. */}
+          <span
+            className={`min-w-0 overflow-hidden transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`}
+            aria-hidden="true"
+          >
+            {activeLabel && (
+              <span
+                key={activeLabel}
+                className="nav-label-in block truncate font-mono text-[11px] uppercase tracking-[0.14em] text-muted"
+              >
+                {activeLabel}
+              </span>
+            )}
+          </span>
           <a
             href="/levent_kurtis_cv.pdf"
             download
-            className={`ml-auto flex h-11 items-center rounded-[18px] bg-foreground px-4 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-opacity duration-300 ${
+            className={`ml-auto flex h-11 shrink-0 items-center rounded-[18px] bg-foreground px-4 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-opacity duration-300 ${
               isMobileMenuOpen ? 'pointer-events-none opacity-0' : ''
             }`}
             tabIndex={isMobileMenuOpen ? -1 : undefined}
@@ -147,10 +303,19 @@ export default function Header() {
                 <a
                   key={item.href}
                   href={item.href}
-                  className="flex items-baseline gap-3 border-t border-border py-3 font-display text-2xl uppercase"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  aria-current={active === item.href ? 'location' : undefined}
+                  className={`flex items-baseline gap-3 border-t border-border py-3 font-display text-2xl uppercase transition-colors duration-200 ${
+                    active && active !== item.href ? 'text-foreground/50' : ''
+                  }`}
+                  onClick={() => {
+                    goTo(item.href)
+                    setIsMobileMenuOpen(false)
+                  }}
                 >
-                  <span className="font-mono text-[10px] text-muted" aria-hidden="true">
+                  <span
+                    className={`font-mono text-[10px] ${active === item.href ? 'text-accent-text' : 'text-muted'}`}
+                    aria-hidden="true"
+                  >
                     0{i + 1}
                   </span>
                   {item.label}

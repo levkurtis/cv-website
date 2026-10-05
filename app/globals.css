@@ -107,6 +107,30 @@ summary::-webkit-details-marker {
   display: none;
 }
 
+/* Desktop nav hover: letters thicken outward from the centre of the word,
+   each delayed by --ripple, with a slight overshoot so it lands like a spring. */
+.weight-letter {
+  font-variation-settings: 'wght' 400;
+  transition: font-variation-settings 0.5s cubic-bezier(0.34, 1.4, 0.64, 1) var(--ripple, 0ms);
+}
+
+.weight-hover:hover .weight-letter,
+.weight-hover:focus-visible .weight-letter {
+  font-variation-settings: 'wght' 700;
+}
+
+/* Mobile nav: the current section name rises in when it changes. */
+.nav-label-in {
+  animation: nav-label-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes nav-label-in {
+  from {
+    opacity: 0;
+    transform: translateY(70%);
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Hero reveal                                                         */
 /* ------------------------------------------------------------------ */

@@ -92,14 +92,14 @@ export default function Hero() {
               <a
                 href="/levent_kurtis_cv.pdf"
                 download
-                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-foreground px-6 text-sm font-medium text-ink-deep transition-colors duration-200 hover:bg-accent-text"
+                className="inline-flex min-h-11 items-center gap-2 rounded-[18px] bg-foreground px-6 text-sm font-medium text-ink-deep transition-colors duration-200 hover:bg-accent-text"
               >
                 Download CV
                 <span className="font-mono text-[11px] text-ink-deep/60">PDF</span>
               </a>
               <a
                 href="#contact"
-                className="inline-flex min-h-11 items-center rounded-full border border-foreground/25 px-6 text-sm font-medium transition-colors duration-200 hover:border-foreground/60"
+                className="inline-flex min-h-11 items-center rounded-[18px] border border-foreground/25 px-6 text-sm font-medium transition-colors duration-200 hover:border-foreground/60"
               >
                 Get in touch
               </a>

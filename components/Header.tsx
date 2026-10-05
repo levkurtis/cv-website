@@ -64,7 +64,7 @@ export default function Header() {
       {/* Desktop: one floating pill */}
       <nav
         aria-label="Main"
-        className={`hidden md:flex items-center gap-1 rounded-full border p-1.5 backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-300 ${surface}`}
+        className={`hidden md:flex items-center gap-1 rounded-[18px] border p-1.5 backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-300 ${surface}`}
       >
         <a href="#" className="font-display px-4 text-lg leading-none tracking-wide">
           LK<span className="sr-only"> Levent Kurtis, back to top</span>
@@ -73,7 +73,7 @@ export default function Header() {
           <a
             key={item.href}
             href={item.href}
-            className="whitespace-nowrap rounded-full px-2.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted lg:px-3.5 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground"
+            className="whitespace-nowrap rounded-[18px] px-2.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted lg:px-3.5 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground"
           >
             {item.label}
           </a>
@@ -81,7 +81,7 @@ export default function Header() {
         <a
           href="/levent_kurtis_cv.pdf"
           download
-          className="ml-1 whitespace-nowrap rounded-full bg-foreground px-4 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-colors duration-200 hover:bg-accent-text"
+          className="ml-1 whitespace-nowrap rounded-[18px] bg-foreground px-4 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-colors duration-200 hover:bg-accent-text"
         >
           Download CV
         </a>
@@ -90,10 +90,10 @@ export default function Header() {
       {/* Mobile: a compact pill that morphs into a panel */}
       <nav
         aria-label="Main"
-        className={`md:hidden overflow-hidden border backdrop-blur-md transition-[width,border-radius,background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] ${
+        className={`md:hidden overflow-hidden border backdrop-blur-md transition-[width,background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] ${
           isMobileMenuOpen
-            ? 'w-full rounded-3xl bg-ink-deep/95 border-foreground/12'
-            : `w-64 rounded-[28px] ${surface}`
+            ? 'w-full rounded-[18px] bg-ink-deep/95 border-foreground/12'
+            : `w-64 rounded-[18px] ${surface}`
         }`}
       >
         <div className="flex h-14 items-center gap-1 pl-2 pr-1.5">
@@ -103,7 +103,7 @@ export default function Header() {
           <a
             href="/levent_kurtis_cv.pdf"
             download
-            className={`ml-auto flex h-11 items-center rounded-full bg-foreground px-4 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-opacity duration-300 ${
+            className={`ml-auto flex h-11 items-center rounded-[18px] bg-foreground px-4 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-opacity duration-300 ${
               isMobileMenuOpen ? 'pointer-events-none opacity-0' : ''
             }`}
             tabIndex={isMobileMenuOpen ? -1 : undefined}
@@ -114,7 +114,7 @@ export default function Header() {
           </a>
           <button
             type="button"
-            className="flex h-11 w-11 items-center justify-center rounded-full font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:text-foreground"
+            className="flex h-11 w-11 items-center justify-center rounded-[18px] font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"
@@ -159,7 +159,7 @@ export default function Header() {
               <a
                 href="/levent_kurtis_cv.pdf"
                 download
-                className="mt-3 flex min-h-11 items-center justify-center rounded-full bg-foreground px-4 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep"
+                className="mt-3 flex min-h-11 items-center justify-center rounded-[18px] bg-foreground px-4 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep"
               >
                 Download CV
               </a>

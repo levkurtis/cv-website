@@ -1,3 +1,5 @@
+import SectionHeading from './SectionHeading'
+
 interface SkillCategory {
   title: string
   skills: string[]
@@ -57,31 +59,27 @@ export const skillCategories: SkillCategory[] = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold mb-12 text-center">
-          <span className="text-accent" aria-hidden="true">#</span> Skills
-        </h2>
+    <section id="skills" className="px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+      <div className="mx-auto grid max-w-[1440px] gap-10 border-t border-border pt-8 lg:grid-cols-12 lg:gap-8">
+        <SectionHeading index="03" label="Skills" title="Skills" />
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="border-t border-border lg:col-span-8 lg:border-t-0">
           {skillCategories.map((category) => (
             <div
               key={category.title}
-              className="bg-card border border-border rounded-xl p-6 hover:border-accent/50 transition-colors duration-200"
+              className="grid gap-4 border-b border-border py-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] sm:gap-8"
             >
-              <h3 className="text-lg font-semibold mb-4 text-accent-text">
-                {category.title}
-              </h3>
-              <div className="flex flex-wrap gap-2">
+              <h3 className="text-lg font-semibold">{category.title}</h3>
+              <ul className="flex flex-wrap content-start items-start gap-2">
                 {category.skills.map((skill) => (
-                  <span
+                  <li
                     key={skill}
-                    className="px-3 py-1 text-sm bg-background border border-border rounded-full text-foreground/80 hover:border-accent/50 transition-colors duration-200"
+                    className="rounded-full border border-foreground/15 px-3 py-1 font-mono text-xs text-foreground/85 transition-colors duration-200 hover:border-accent hover:text-accent-text"
                   >
                     {skill}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           ))}
         </div>

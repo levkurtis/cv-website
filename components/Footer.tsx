@@ -1,58 +1,73 @@
+import LocalTime from './LocalTime'
+
+const links = [
+  { label: 'LinkedIn', detail: 'in/leventkurtis', href: 'https://linkedin.com/in/leventkurtis', external: true },
+  { label: 'Email', detail: 'levkurtis@gmail.com', href: 'mailto:levkurtis@gmail.com' },
+  { label: 'GitHub', detail: 'levkurtis', href: 'https://github.com/levkurtis', external: true },
+  { label: 'CV', detail: 'PDF', href: '/levent_kurtis_cv.pdf', download: true },
+]
+
 export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-          {/* Email */}
-          <a
-            href="mailto:levkurtis@gmail.com"
-            className="flex items-center gap-2 text-muted hover:text-accent transition-colors duration-200"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            <span>levkurtis@gmail.com</span>
-          </a>
+    <footer id="contact" className="relative overflow-hidden bg-ink-deep">
+      {/* Steel glow rising from the bottom edge */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] bg-[radial-gradient(ellipse_70%_100%_at_50%_100%,rgb(127_166_207/0.3),transparent_70%)]"
+        aria-hidden="true"
+      />
 
-          <span className="text-muted/50">•</span>
+      <div className="relative mx-auto max-w-[1440px] px-5 pt-24 sm:px-8 lg:px-12 lg:pt-32">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-4">
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted" aria-hidden="true">
+              <span className="text-accent-text">[06]</span> Contact
+            </p>
+            <h2 className="font-display mt-4 text-[clamp(2.5rem,4.4vw,4.25rem)] uppercase leading-[0.9]">
+              Get in touch
+            </h2>
+          </div>
 
-          {/* LinkedIn */}
-          <a
-            href="https://linkedin.com/in/leventkurtis"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-muted hover:text-accent transition-colors duration-200"
-          >
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>
-            <span>LinkedIn</span>
-          </a>
+          <ul className="border-t border-foreground/10 lg:col-span-5">
+            {links.map((link) => (
+              <li key={link.label} className="border-b border-foreground/10">
+                <a
+                  href={link.href}
+                  {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  {...(link.download ? { download: true } : {})}
+                  className="group flex items-baseline justify-between gap-4 py-4 font-mono text-xs uppercase tracking-[0.14em] transition-colors duration-200 hover:text-accent-text"
+                >
+                  <span>
+                    <span className="mr-3 text-accent" aria-hidden="true">++</span>
+                    {link.label}
+                  </span>
+                  <span className="normal-case tracking-normal text-muted transition-colors duration-200 group-hover:text-accent-text">
+                    {link.detail}
+                    {link.external && <span aria-hidden="true"> ↗</span>}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
 
-          <span className="text-muted/50">•</span>
-
-          {/* CV Download */}
-          <a
-            href="/levent_kurtis_cv.pdf"
-            download
-            className="flex items-center gap-1.5 text-muted hover:text-accent transition-colors duration-200"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span>CV</span>
-          </a>
-
-          <span className="text-muted/50">•</span>
-
-          {/* Copyright */}
-          <span className="text-muted">
-            © {currentYear} Levent Kurtis
-          </span>
+          <div className="flex justify-between gap-8 font-mono text-xs uppercase tracking-[0.14em] text-muted lg:col-span-3 lg:flex-col lg:items-end lg:justify-start lg:text-right">
+            <p>
+              Copenhagen
+              <LocalTime className="mt-1 block text-2xl tracking-normal text-foreground" />
+            </p>
+            <p>© {currentYear} Levent Kurtis</p>
+          </div>
         </div>
       </div>
+
+      {/* Full-bleed name, cropped by the bottom edge */}
+      <p
+        className="font-display relative mt-20 select-none whitespace-nowrap text-center uppercase leading-[0.78] text-[17.5vw] -mb-[0.12em] text-foreground"
+        aria-hidden="true"
+      >
+        Levent Kurtis
+      </p>
     </footer>
   )
 }

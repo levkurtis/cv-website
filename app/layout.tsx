@@ -1,16 +1,39 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Archivo, Inter, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
+import Intro from '@/components/Intro'
 import ScrollBackground from '@/components/ScrollBackground'
 import StructuredData, { SITE_URL } from '@/components/StructuredData'
 
+// Variable fonts: one file each covers every weight we use.
 const inter = Inter({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
   variable: '--font-inter',
 })
+
+// Display face. The wdth axis is what lets us render it condensed.
+const archivo = Archivo({
+  subsets: ['latin'],
+  axes: ['wdth'],
+  display: 'swap',
+  variable: '--font-archivo',
+})
+
+// Only small labels use the mono face, so it isn't preloaded: that keeps it
+// from competing with the hero photo and display font for early bandwidth.
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  preload: false,
+  variable: '--font-jetbrains',
+})
+
+// Runs before first paint. Plays the intro once per tab session, never for
+// reduced motion. Without JS the attribute is never set, so the overlay
+// stays display:none.
+const INTRO_SCRIPT = `try{if(!sessionStorage.getItem('lk-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.setAttribute('data-intro','play');sessionStorage.setItem('lk-intro','1')}}catch(e){}`
 
 const TITLE = 'Levent Kurtis | Data & AI Leader'
 const DESCRIPTION =
@@ -53,7 +76,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#21212f',
+  themeColor: '#1a1d24',
 }
 
 export default function RootLayout({
@@ -62,19 +85,27 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${archivo.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        {/* Preload the LCP image. type="image/avif" makes non-supporting browsers skip it. */}
+        <script dangerouslySetInnerHTML={{ __html: INTRO_SCRIPT }} />
+        {/* Preload the LCP image. type="image/avif" makes non-supporting browsers skip it.
+            imageSizes must match the sizes attribute in Hero.tsx. */}
         <link
           rel="preload"
           as="image"
           type="image/avif"
-          href="/photo-234.avif"
-          imageSrcSet="/photo-234.avif 1x, /photo-468.avif 2x"
+          href="/photo-hero-720.avif"
+          imageSrcSet="/photo-hero-720.avif 720w, /photo-hero-1080.avif 1080w"
+          imageSizes="(min-width: 1024px) min(40vw, 640px), 72vw"
           fetchPriority="high"
         />
       </head>
       <body className="antialiased">
+        <Intro />
         <ScrollBackground />
         {children}
         <Analytics />

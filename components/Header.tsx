@@ -38,97 +38,117 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMobileMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [isMobileMenuOpen])
+
+  // The pill gets denser once the page has scrolled under it.
+  const surface = isScrolled
+    ? 'bg-ink-deep/85 border-foreground/12 shadow-[0_8px_30px_rgb(0_0_0/0.35)]'
+    : 'bg-ink-deep/55 border-foreground/8'
+
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'
-      }`}
-    >
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <a href="#" className="text-xl font-semibold text-accent">
-            LK
+    <header className="fixed inset-x-0 top-3 z-50 flex justify-center px-3 sm:top-4">
+      {/* Desktop: one floating pill */}
+      <nav
+        aria-label="Main"
+        className={`hidden md:flex items-center gap-1 rounded-full border backdrop-blur-md transition-[padding,background-color,border-color,box-shadow] duration-300 ${surface} ${
+          isScrolled ? 'p-1' : 'p-1.5'
+        }`}
+      >
+        <a href="#" className="font-display px-4 text-lg leading-none tracking-wide">
+          LK<span className="sr-only"> Levent Kurtis, back to top</span>
+        </a>
+        {navItems.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            className="rounded-full px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground"
+          >
+            {item.label}
           </a>
+        ))}
+        <a
+          href="/levent_kurtis_cv.pdf"
+          download
+          className="ml-1 rounded-full bg-foreground px-4 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep transition-colors duration-200 hover:bg-accent-text"
+        >
+          CV <span aria-hidden="true">↓</span>
+        </a>
+      </nav>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="text-sm text-muted hover:text-foreground transition-colors duration-200"
-              >
-                {item.label}
-              </a>
-            ))}
-            <a
-              href="/levent_kurtis_cv.pdf"
-              download
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-background bg-accent hover:bg-accent-dark rounded-lg transition-colors duration-200"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              CV
-            </a>
-          </div>
-
-          {/* Mobile Menu Button */}
+      {/* Mobile: a compact pill that morphs into a panel */}
+      <nav
+        aria-label="Main"
+        className={`md:hidden overflow-hidden border backdrop-blur-md transition-[width,border-radius,background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] ${
+          isMobileMenuOpen
+            ? 'w-full rounded-3xl bg-ink-deep/95 border-foreground/12'
+            : `w-44 rounded-[28px] ${surface}`
+        }`}
+      >
+        <div className="flex h-12 items-center justify-between pl-5 pr-1.5">
+          <a href="#" className="font-display text-lg leading-none tracking-wide">
+            LK<span className="sr-only"> Levent Kurtis, back to top</span>
+          </a>
           <button
-            className="md:hidden p-2 text-muted hover:text-foreground"
+            type="button"
+            className="flex h-9 items-center gap-2 rounded-full px-3 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
             aria-label="Toggle menu"
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {isMobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
+            <span className="relative block h-2.5 w-4" aria-hidden="true">
+              <span
+                className={`absolute left-0 h-px w-4 bg-current transition-transform duration-300 ${
+                  isMobileMenuOpen ? 'top-1 rotate-45' : 'top-0'
+                }`}
+              />
+              <span
+                className={`absolute left-0 h-px w-4 bg-current transition-transform duration-300 ${
+                  isMobileMenuOpen ? 'top-1 -rotate-45' : 'top-2'
+                }`}
+              />
+            </span>
           </button>
         </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
-            {navItems.map((item) => (
+        <div
+          id="mobile-menu"
+          className={`grid transition-[grid-template-rows,visibility] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] ${
+            isMobileMenuOpen ? 'grid-rows-[1fr] visible' : 'grid-rows-[0fr] invisible'
+          }`}
+        >
+          <div className="min-h-0">
+            <div className="px-5 pt-2 pb-5">
+              {navItems.map((item, i) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-baseline gap-3 border-t border-border py-3 font-display text-2xl uppercase"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span className="font-mono text-[10px] text-muted" aria-hidden="true">
+                    0{i + 1}
+                  </span>
+                  {item.label}
+                </a>
+              ))}
               <a
-                key={item.href}
-                href={item.href}
-                className="block py-2 text-muted hover:text-foreground transition-colors duration-200"
-                onClick={() => setIsMobileMenuOpen(false)}
+                href="/levent_kurtis_cv.pdf"
+                download
+                className="mt-3 flex justify-center rounded-full bg-foreground px-4 py-3 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-deep"
               >
-                {item.label}
+                Download CV <span aria-hidden="true">&nbsp;↓</span>
               </a>
-            ))}
-            <a
-              href="/levent_kurtis_cv.pdf"
-              download
-              className="flex items-center justify-center gap-1.5 mt-4 px-4 py-2 text-sm font-medium text-background bg-accent hover:bg-accent-dark rounded-lg transition-colors duration-200"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              CV
-            </a>
+            </div>
           </div>
-        )}
+        </div>
       </nav>
     </header>
   )

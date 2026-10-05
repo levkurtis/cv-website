@@ -1,73 +1,70 @@
+import SectionHeading from './SectionHeading'
+
+// Label on the left, content on the right, hairline between rows.
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="grid gap-3 border-b border-border py-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] sm:gap-8">
+      <h4 className="text-lg font-semibold">{label}</h4>
+      <div>{children}</div>
+    </div>
+  )
+}
+
+function Marker() {
+  return <span className="mt-[12px] mr-3 h-px w-3 shrink-0 bg-accent" aria-hidden="true" />
+}
+
 export default function Education() {
   return (
-    <section id="education" className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold mb-12 text-center">
-          <span className="text-accent" aria-hidden="true">#</span> Education
-        </h2>
+    <section id="education" className="px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+      <div className="mx-auto grid max-w-[1440px] gap-10 border-t border-border pt-8 lg:grid-cols-12 lg:gap-8">
+        <SectionHeading index="05" label="Education" title="Education" />
 
-        <div className="bg-card border border-border rounded-xl p-8">
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+        <div className="lg:col-span-8">
+          <div className="flex flex-col gap-4 border-b border-border pb-8 md:flex-row md:items-end md:justify-between">
             <div>
-              <h3 className="text-xl font-semibold">
+              <h3 className="font-display text-3xl uppercase leading-none sm:text-4xl">
                 MSc in Business Administration and E-business
               </h3>
-              <p className="text-accent-text font-medium">Copenhagen Business School</p>
+              <p className="mt-3 font-medium text-accent-text">Copenhagen Business School</p>
             </div>
-            <div className="flex items-center gap-2 text-muted">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-              </svg>
-              <span className="text-sm">Copenhagen, Denmark</span>
-            </div>
+            <p className="shrink-0 font-mono text-xs uppercase tracking-[0.14em] text-muted">Copenhagen, Denmark</p>
           </div>
 
-          <div className="space-y-6">
-            {/* Thesis */}
-            <div className="border-l-2 border-accent pl-4">
-              <h4 className="font-semibold text-foreground/90 mb-2">Thesis</h4>
-              <p className="text-sm text-foreground/70">
-                The Digital Transformation of Traditional Retail: Advancing Digital Maturity with E-commerce Capability-Building
-              </p>
-            </div>
+          <Row label="Thesis">
+            <p className="text-[15px] leading-relaxed text-foreground/85">
+              The Digital Transformation of Traditional Retail: Advancing Digital Maturity with E-commerce Capability-Building
+            </p>
+          </Row>
 
-            {/* Projects */}
-            <div className="border-l-2 border-accent pl-4">
-              <h4 className="font-semibold text-foreground/90 mb-2">Projects</h4>
-              <ul className="space-y-1">
-                <li className="text-sm text-foreground/70 flex">
-                  <span className="text-accent mr-2">›</span>
-                  <span>Sentiment Analysis of Spotify&apos;s Brand Perception</span>
-                </li>
-                <li className="text-sm text-foreground/70 flex">
-                  <span className="text-accent mr-2">›</span>
-                  <span>AI in the Danish Marketing Industry</span>
-                </li>
-              </ul>
-            </div>
+          <Row label="Projects">
+            <ul className="space-y-2">
+              <li className="flex text-[15px] text-foreground/85">
+                <Marker />
+                <span>Sentiment Analysis of Spotify&apos;s Brand Perception</span>
+              </li>
+              <li className="flex text-[15px] text-foreground/85">
+                <Marker />
+                <span>AI in the Danish Marketing Industry</span>
+              </li>
+            </ul>
+          </Row>
 
-            {/* Relevant Courses */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="border-l-2 border-accent pl-4">
-                <h4 className="font-semibold text-foreground/90 mb-2">Data & AI Courses</h4>
-                <ul className="space-y-1">
-                  <li className="text-sm text-foreground/70">Data Analytics in Digital Business</li>
-                  <li className="text-sm text-foreground/70">Big Social Data Analytics</li>
-                  <li className="text-sm text-foreground/70">AI in Business and Society</li>
-                </ul>
-              </div>
+          <Row label="Data & AI Courses">
+            <ul className="space-y-2 text-[15px] text-foreground/85">
+              <li>Data Analytics in Digital Business</li>
+              <li>Big Social Data Analytics</li>
+              <li>AI in Business and Society</li>
+            </ul>
+          </Row>
 
-              <div className="border-l-2 border-accent pl-4">
-                <h4 className="font-semibold text-foreground/90 mb-2">Digital Business & Strategy Courses</h4>
-                <ul className="space-y-1">
-                  <li className="text-sm text-foreground/70">Digital Transformation Management</li>
-                  <li className="text-sm text-foreground/70">Digital Platforms</li>
-                  <li className="text-sm text-foreground/70">Strategic Tools for Digital Business</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <Row label="Digital Business & Strategy Courses">
+            <ul className="space-y-2 text-[15px] text-foreground/85">
+              <li>Digital Transformation Management</li>
+              <li>Digital Platforms</li>
+              <li>Strategic Tools for Digital Business</li>
+            </ul>
+          </Row>
         </div>
       </div>
     </section>

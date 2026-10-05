@@ -1,3 +1,5 @@
+import SectionHeading from './SectionHeading'
+
 interface Certification {
   name: string
   issuer: string
@@ -49,41 +51,27 @@ export const certificationCategories: CertificationCategory[] = [
 
 export default function Certifications() {
   return (
-    <section id="certifications" className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold mb-12 text-center">
-          <span className="text-accent" aria-hidden="true">#</span> Certifications
-        </h2>
+    <section id="certifications" className="px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+      <div className="mx-auto grid max-w-[1440px] gap-10 border-t border-border pt-8 lg:grid-cols-12 lg:gap-8">
+        <SectionHeading index="04" label="Certifications" title="Certifications" />
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-12 lg:col-span-8">
           {certificationCategories.map((category) => (
-            <div
-              key={category.title}
-              className="bg-card border border-border rounded-xl p-6"
-            >
-              <h3 className="text-lg font-semibold mb-4 text-accent-text">
+            <div key={category.title}>
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent-text">
                 {category.title}
               </h3>
-              <ul className="space-y-3">
+              <ul className="mt-3 border-t border-border">
                 {category.certifications.map((cert, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <svg
-                      className="w-5 h-5 text-accent mt-0.5 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-                      />
-                    </svg>
-                    <div>
-                      <p className="text-sm font-medium text-foreground/90">{cert.name}</p>
-                      <p className="text-xs text-muted">{cert.issuer}, {cert.year}</p>
-                    </div>
+                  <li
+                    key={idx}
+                    className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-6 gap-y-1 border-b border-border py-4 sm:grid-cols-[minmax(0,1fr)_12rem_3rem]"
+                  >
+                    <p className="text-[15px] font-medium text-foreground/90">{cert.name}</p>
+                    <p className="col-start-1 row-start-2 text-sm text-muted sm:col-start-2 sm:row-start-1">{cert.issuer}</p>
+                    <p className="col-start-2 row-start-1 text-right font-mono text-xs leading-6 text-muted sm:col-start-3">
+                      {cert.year}
+                    </p>
                   </li>
                 ))}
               </ul>

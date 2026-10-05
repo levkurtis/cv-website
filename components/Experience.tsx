@@ -1,3 +1,5 @@
+import SectionHeading from './SectionHeading'
+
 interface Role {
   title: string
   period: string
@@ -107,51 +109,64 @@ const experiences: Job[] = [
   },
 ]
 
+// Plus sign that rotates into a cross when its <details> is open.
+function Toggle({ open }: { open: string }) {
+  return (
+    <span
+      className={`relative h-3.5 w-3.5 shrink-0 text-muted transition-transform duration-300 ${open}`}
+      aria-hidden="true"
+    >
+      <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current" />
+      <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-current" />
+    </span>
+  )
+}
+
+// A short rule as the list marker.
+function Marker() {
+  return <span className="mt-[12px] mr-3 h-px w-3 shrink-0 bg-accent" aria-hidden="true" />
+}
+
 export default function Experience() {
   return (
-    <section id="experience" className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold mb-12 text-center">
-          <span className="text-accent" aria-hidden="true">#</span> Work Experience
-        </h2>
+    <section id="experience" className="px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+      <div className="mx-auto grid max-w-[1440px] gap-10 border-t border-border pt-8 lg:grid-cols-12 lg:gap-8">
+        <SectionHeading index="02" label="Experience" title="Work Experience" />
 
-        <div className="space-y-6">
+        <div className="border-t border-border lg:col-span-8 lg:border-t-0">
           {experiences.map((job) => (
             <details
               key={job.company}
               open={job.company === 'Accenture'}
-              className="group bg-card border border-border rounded-xl overflow-hidden"
+              className="group border-b border-border"
             >
-              <summary className="px-6 py-4 flex items-center justify-between gap-4 cursor-pointer hover:bg-card-hover transition-colors duration-200 list-none [&::-webkit-details-marker]:hidden">
-                <div className="text-left">
-                  <h3 className="text-xl font-semibold">{job.company}</h3>
-                  <p className="text-sm text-muted">
-                    {job.roles[0].title} • {job.roles[job.roles.length - 1].period.split(' – ')[0]} – {job.roles[0].period.split(' – ')[1]}
-                  </p>
+              <summary className="flex cursor-pointer items-center justify-between gap-6 py-6 transition-colors duration-200 hover:text-accent-text">
+                <div className="min-w-0">
+                  <h3 className="font-display text-3xl uppercase leading-none sm:text-4xl">{job.company}</h3>
+                  <p className="mt-2 text-sm text-muted">{job.roles[0].title}</p>
                 </div>
-                <svg
-                  className="w-5 h-5 shrink-0 text-muted transition-transform duration-200 group-open:rotate-180"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+                <div className="flex shrink-0 items-center gap-5">
+                  <span className="font-mono text-xs text-muted">
+                    {job.roles[job.roles.length - 1].period.split(' – ')[0]} – {job.roles[0].period.split(' – ')[1]}
+                  </span>
+                  <Toggle open="group-open:rotate-45" />
+                </div>
               </summary>
 
-              <div className="px-6 pb-6 space-y-6">
+              <div className="space-y-10 pb-10 pt-2">
                 {job.roles.map((role, idx) => (
-                  <div key={idx} className="border-l-2 border-accent pl-4">
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <h4 className="font-semibold text-accent-text">{role.title}</h4>
-                      <span className="text-sm text-muted">• {role.period}</span>
+                  <div key={idx}>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                      <h4 className="text-lg font-semibold">{role.title}</h4>
+                      <span className="rounded-full border border-foreground/15 px-2.5 py-0.5 font-mono text-[11px] text-accent-text">
+                        {role.period}
+                      </span>
                     </div>
-                    <p className="text-sm text-foreground/80 mb-3">{role.description}</p>
-                    <ul className="space-y-2">
+                    <p className="mt-2 text-sm text-muted">{role.description}</p>
+                    <ul className="mt-4 space-y-2.5">
                       {role.achievements.map((achievement, aIdx) => (
-                        <li key={aIdx} className="text-sm text-foreground/70 flex">
-                          <span className="text-accent mr-2" aria-hidden="true">›</span>
+                        <li key={aIdx} className="flex text-[15px] leading-relaxed text-foreground/85">
+                          <Marker />
                           <span>{achievement}</span>
                         </li>
                       ))}
@@ -161,29 +176,19 @@ export default function Experience() {
 
                 {/* Internal Initiatives - Only for Accenture */}
                 {job.internalInitiatives && (
-                  <details className="group/init border-l-2 border-accent/50 pl-4 mt-6">
-                    <summary className="flex items-center gap-2 mb-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-                      <h4 className="font-semibold text-accent-text">
-                        Internal Initiatives
-                      </h4>
-                      <span className="text-xs text-muted bg-background/50 px-2 py-0.5 rounded">
+                  <details className="group/init border-t border-border pt-5">
+                    <summary className="flex cursor-pointer flex-wrap items-center gap-3">
+                      <h4 className="text-lg font-semibold">Internal Initiatives</h4>
+                      <span className="rounded-full border border-foreground/15 px-2.5 py-0.5 font-mono text-[11px] text-muted">
                         Leadership, D&I, Community
                       </span>
-                      <svg
-                        className="w-4 h-4 text-muted transition-transform duration-200 group-open/init:rotate-180"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
+                      <Toggle open="group-open/init:rotate-45" />
                     </summary>
 
-                    <ul className="space-y-2">
+                    <ul className="mt-4 space-y-2.5">
                       {job.internalInitiatives.map((initiative, idx) => (
-                        <li key={idx} className="text-sm text-foreground/70 flex">
-                          <span className="text-accent mr-2" aria-hidden="true">›</span>
+                        <li key={idx} className="flex text-[15px] leading-relaxed text-foreground/85">
+                          <Marker />
                           <span>{initiative}</span>
                         </li>
                       ))}
